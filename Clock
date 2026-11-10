@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="bn" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99 Names of Allah Clock & Dhikr</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Poppins:wght@400;500;600&display=swap');
+        
+        .amiri-font {
+            font-family: 'Amiri', serif;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f1115;
+            color: #ffffff;
+        }
+
+        #namesWheel {
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 select-none" dir="ltr">
+
+    <!-- Top Header info -->
+    <header class="w-full max-w-md flex justify-between items-center text-sm text-gray-400 px-2 py-2">
+        <div>(DHIKR) 99 NAMES OF ALLAH</div>
+        <div id="counterBadge" class="bg-gray-800 px-3 py-1 rounded-full text-white font-medium text-xs">1 / 99</div>
+    </header>
+
+    <!-- Main Clock Container -->
+    <main class="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center my-4">
+        
+        <!-- Outer White Clock Dial -->
+        <div class="absolute inset-0 bg-white rounded-full shadow-2xl border-4 border-gray-200 flex items-center justify-center overflow-hidden">
+            
+            <!-- Rotating Names Wheel -->
+            <div id="namesWheel" class="absolute w-full h-full rounded-full">
+                <!-- Dynamically injected names -->
+            </div>
+
+            <!-- Inner Dark Circle with Islamic Icon (Lantern & Star) -->
+            <div class="absolute w-32 h-32 sm:w-36 sm:h-36 bg-[#0f1115] rounded-full flex flex-col items-center justify-center shadow-inner z-10 border border-amber-500/20">
+                <!-- Islamic Lantern SVG Icon -->
+                <svg class="w-10 h-10 text-amber-400 mb-1 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2c-.55 0-1 .45-1 1v1.08C7.57 4.57 5 7.51 5 11v5l-2 2v1h18v-1l-2-2v-5c0-3.49-2.57-6.43-6-7.92V3c0-.55-.45-1-1-1zm0 4c2.76 0 5 2.24 5 5v5.17l1.59 1.59H5.41L7 16.17V11c0-2.76 2.24-5 5-5zm-1 9h2v4h-2v-4z"/>
+                </svg>
+                <!-- Decorative Islamic Star -->
+                <svg class="w-4 h-4 text-amber-300/80 mt-1 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0l3.5 8.5L24 12l-8.5 3.5L12 24l-3.5-8.5L0 12l8.5-3.5z"/>
+                </svg>
+            </div>
+
+            <!-- Clock Pointer Hand -->
+            <div id="clockHand" class="absolute top-0 bottom-0 left-1/2 w-1 -ml-0.5 z-20 pointer-events-none">
+                <div class="absolute top-6 left-1/2 -ml-2.5 w-5 h-5 bg-black border-2 border-white rounded-full shadow-md flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Display Active Name Details -->
+    <section class="w-full max-w-md bg-gray-900/85 backdrop-blur border border-gray-800 rounded-2xl p-5 text-center shadow-xl my-2">
+        <div id="arabicName" class="amiri-font text-3xl sm:text-4xl text-amber-400 mb-1">ٱلرَّحْمَٰنُ</div>
+        <div id="englishName" class="text-lg sm:text-xl font-semibold tracking-wide text-white">AR-RAHMAN</div>
+        <div id="nameMeaning" class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-0.5">The Beneficent</div>
+        <div class="text-[10px] text-amber-300/80 mt-2 italic">(Say it in your heart)</div>
+    </section>
+
+    <!-- Audio / Playback Controls -->
+    <footer class="w-full max-w-md flex flex-col items-center gap-3 pb-4">
+        <div class="flex items-center justify-center gap-4 w-full">
+            <button id="prevBtn" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition">Prev</button>
+            <button id="toggleBtn" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-gray-950 font-bold px-8 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+                <span id="playIcon">⏸</span> <span id="playText">Pause Dhikr</span>
+            </button>
+            <button id="nextBtn" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition">Next</button>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-gray-400 mt-1 bg-gray-900/50 px-3 py-1.5 rounded-lg border border-gray-800">
+            <input type="checkbox" id="soundToggle" checked class="accent-amber-500 w-4 h-4 cursor-pointer">
+            <label for="soundToggle" class="cursor-pointer">Enable Native Arabic Voice Recitation</label>
+        </div>
+    </footer>
+
+    <!-- Interactive Start Overlay to Unlock Audio on Mobile -->
+    <div id="startOverlay" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-6 text-center">
+        <div class="bg-gray-900 border border-gray-800 p-6 rounded-3xl max-w-sm shadow-2xl">
+            <h2 class="text-xl font-bold text-amber-400 mb-2">99 Names of Allah Clock</h2>
+            <p class="text-gray-300 text-sm mb-6">Tap the button below to start the clock with pure Arabic pronunciation.</p>
+            <button id="startAppBtn" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold px-8 py-3.5 rounded-xl shadow-lg w-full transition text-base">
+                Start Experience & Sound
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data containing exact pure Arabic text (with proper Tashkeel/Harakat) for accurate native reading
+        const namesOfAllah = [
+            { ar: "اللَّهُ", en: "ALLAH", meaning: "The Proper Name" },
+            { ar: "الرَّحْمَانُ", en: "AR-RAHMAN", meaning: "The Beneficent" },
+            { ar: "الرَّحِيمُ", en: "AR-RAHIM", meaning: "The Merciful" },
+            { ar: "الْمَلِكُ", en: "AL-MALIK", meaning: "The Eternal Lord" },
+            { ar: "الْقُدُّوسُ", en: "AL-QUDDUS", meaning: "The Pure" },
+            { ar: "السَّلَامُ", en: "AS-SALAM", meaning: "The Source of Peace" },
+            { ar: "الْمُؤْمِنُ", en: "AL-MU'MIN", meaning: "The Inspirer of Faith" },
+            { ar: "الْمُهَيْمِنُ", en: "AL-MUHAYMIN", meaning: "The Guardian" },
+            { ar: "الْعَزِيزُ", en: "AL-AZIZ", meaning: "The Mighty" },
+            { ar: "الْجَبَّارُ", en: "AL-JABBAR", meaning: "The Compeller" },
+            { ar: "الْمُتَكَبِّرُ", en: "AL-MUTAKABBIR", meaning: "The Greatest" },
+            { ar: "الْخَالِقُ", en: "AL-KHALIQ", meaning: "The Creator" },
+            { ar: "الْبَارِئُ", en: "AL-BARI", meaning: "The Maker" },
+            { ar: "الْمُصَوِّرُ", en: "AL-MUSAWWIR", meaning: "The Fashioner" },
+            { ar: "الْغَفَّارُ", en: "AL-GHAFFAR", meaning: "The Forgiver" },
+            { ar: "الْقَهَّارُ", en: "AL-QAHHAR", meaning: "The Subduer" },
+            { ar: "الْوَهَّابُ", en: "AL-WAHHAB", meaning: "The Bestower" },
+            { ar: "الرَّزَّاقُ", en: "AR-RAZZAQ", meaning: "The Provider" },
+            { ar: "الْفَتَّاحُ", en: "AL-FATTAH", meaning: "The Opener" },
+            { ar: "الْعَلِيمُ", en: "AL-ALIM", meaning: "The All-Knowing" },
+            { ar: "الْقَابِضُ", en: "AL-QABID", meaning: "The Withholder" },
+            { ar: "الْبَاسِطُ", en: "AL-BASIT", meaning: "The Expander" },
+            { ar: "الْخَافِضُ", en: "AL-KHAFID", meaning: "The Abaser" },
+            { ar: "الرَّافِعُ", en: "AR-RAFI", meaning: "The Exalter" },
+            { ar: "الْمُعِزُّ", en: "AL-MU'IZZ", meaning: "The Honourer" },
+            { ar: "الْمُذِلُّ", en: "AL-MUDHILL", meaning: "The Dishonourer" },
+            { ar: "السَّمِيعُ", en: "AS-SAMI", meaning: "The All-Hearing" },
+            { ar: "الْبَصِيرُ", en: "AL-BASIR", meaning: "The All-Seeing" },
+            { ar: "الْحَكَمُ", en: "AL-HAKAM", meaning: "The Judge" },
+            { ar: "الْعَدْلُ", en: "AL-ADL", meaning: "The Just" },
+            { ar: "اللَّطِيفُ", en: "AL-LATIF", meaning: "The Subtle One" },
+            { ar: "الْخَبِيرُ", en: "AL-KHABIR", meaning: "The Aware" },
+            { ar: "الْحَلِيمُ", en: "AL-HALIM", meaning: "The Forbearing" },
+            { ar: "الْعَظِيمُ", en: "AL-AZIM", meaning: "The Magnificent" },
+            { ar: "الْغَفُورُ", en: "AL-GHAFUR", meaning: "The Forgiving" },
+            { ar: "الشَّكُورُ", en: "ASH-SHAKUR", meaning: "The Appreciative" },
+            { ar: "الْعَلِيُّ", en: "AL-ALIYY", meaning: "The Highest" },
+            { ar: "الْكَبِيرُ", en: "AL-KABIR", meaning: "The Great" },
+            { ar: "الْحَفِيظُ", en: "AL-HAFIZ", meaning: "The Preserver" },
+            { ar: "الْمُقِيتُ", en: "AL-MUQIT", meaning: "The Nourisher" },
+            { ar: "الْحَسِيبُ", en: "AL-HASIB", meaning: "The Reckoner" },
+            { ar: "الْجَلِيلُ", en: "AL-JALIL", meaning: "The Majestic" },
+            { ar: "الْكَرِيمُ", en: "AL-KARIM", meaning: "The Generous" },
+            { ar: "الرَّقِيبُ", en: "AR-RAQIB", meaning: "The Watchful" },
+            { ar: "الْمُجِيبُ", en: "AL-MUJIB", meaning: "The Responsive" },
+            { ar: "الْوَاسِعُ", en: "AL-WASI", meaning: "The All-Encompassing" },
+            { ar: "الْحَكِيمُ", en: "AL-HAKIM", meaning: "The Wise" },
+            { ar: "الْوَدُودُ", en: "AL-WADUD", meaning: "The Loving" },
+            { ar: "الْمَجِيدُ", en: "AL-MAJID", meaning: "The Glorious" },
+            { ar: "الْبَاعِثُ", en: "AL-BA'ITH", meaning: "The Resurrector" },
+            { ar: "الشَّهِيدُ", en: "ASH-SHAHID", meaning: "The Witness" },
+            { ar: "الْحَقُّ", en: "AL-HAQQ", meaning: "The Truth" },
+            { ar: "الْوَكِيلُ", en: "AL-WAKIL", meaning: "The Trustee" },
+            { ar: "الْقَوِيُّ", en: "AL-QAWYY", meaning: "The Strong" },
+            { ar: "الْمَتِينُ", en: "AL-MATIN", meaning: "The Firm" },
+            { ar: "الْوَلِيُّ", en: "AL-WALIY", meaning: "The Protecting Friend" },
+            { ar: "الْحَمِيدُ", en: "AL-HAMID", meaning: "The Praiseworthy" },
+            { ar: "الْمُحْصِي", en: "AL-MUHSI", meaning: "The Accounter" },
+            { ar: "الْمُبْدِئُ", en: "AL-MUBDI", meaning: "The Originator" },
+            { ar: "الْمُعِيدُ", en: "AL-MU'ID", meaning: "The Reproducer" },
+            { ar: "الْمُحْيِي", en: "AL-MUHYI", meaning: "The Giver of Life" },
+            { ar: "الْمُمِيتُ", en: "AL-MUMIT", meaning: "The Creator of Death" },
+            { ar: "الْحَيُّ", en: "AL-HAYY", meaning: "The Ever-Living" },
+            { ar: "الْقَيُّومُ", en: "AL-QAYYUM", meaning: "The Self-Subsisting" },
+            { ar: "الْوَاجِدُ", en: "AL-WAJID", meaning: "The Finder" },
+            { ar: "الْمَاجِدُ", en: "AL-MAJID", meaning: "The Noble" },
+            { ar: "الْوَاحِدُ", en: "AL-WAHID", meaning: "The Unique" },
+            { ar: "الْأَحَدُ", en: "AL-AHAD", meaning: "The One" },
+            { ar: "الصَّمَدُ", en: "AS-SAMAD", meaning: "The Eternal Satisfier" },
+            { ar: "الْقَادِرُ", en: "AL-QADIR", meaning: "The Capable" },
+            { ar: "الْمُقْتَدِرُ", en: "AL-MUQTADIR", meaning: "The Powerful" },
+            { ar: "الْمُقَدِّمُ", en: "AL-MUQADDIM", meaning: "The Expediter" },
+            { ar: "الْمُؤَخِّرُ", en: "AL-MU'AKHKHIR", meaning: "The Delayer" },
+            { ar: "الْأَوَّلُ", en: "AL-AWWAL", meaning: "The First" },
+            { ar: "الْآخِرُ", en: "AL-AKHIR", meaning: "The Last" },
+            { ar: "الظَّاهِرُ", en: "AZ-ZAHIR", meaning: "The Manifest" },
+            { ar: "الْبَاطِنُ", en: "AL-BATIN", meaning: "The Hidden" },
+            { ar: "الْوَالِي", en: "AL-WALI", meaning: "The Governor" },
+            { ar: "الْمُتَعَالِي", en: "AL-MUTA'ALI", meaning: "The Most Exalted" },
+            { ar: "الْبَرُّ", en: "AL-BARR", meaning: "The Source of Goodness" },
+            { ar: "التَّوَّابُ", en: "AT-TAWWAB", meaning: "The Acceptor of Repentance" },
+            { ar: "الْمُنْتَقِمُ", en: "AL-MUNTAQIM", meaning: "The Avenger" },
+            { ar: "الْعَفُوُّ", en: "AL-AFUWW", meaning: "The Pardoner" },
+            { ar: "الرَّؤُوفُ", en: "AR-RA'UF", meaning: "The Compassionate" },
+            { ar: "مَالِكُ الْمُلْكِ", en: "MALIK-UL-MULK", meaning: "Owner of Sovereignty" },
+            { ar: "ذُو الْجَلَالِ وَالِإْكْرَامِ", en: "DHUL-JALALI WAL-IKRAM", meaning: "Lord of Majesty & Generosity" },
+            { ar: "الْمُقْسِطُ", en: "AL-MUQSIT", meaning: "The Equitable" },
+            { ar: "الْجَامِعُ", en: "AL-JAMI", meaning: "The Gatherer" },
+            { ar: "الْغَنِيُّ", en: "AL-GHANIYY", meaning: "The Self-Sufficient" },
+            { ar: "الْمُغْنِي", en: "AL-MUGHNNI", meaning: "The Enricher" },
+            { ar: "الْمَانِعُ", en: "AL-MANI", meaning: "The Preventer" },
+            { ar: "الضَّارُ", en: "AD-DARR", meaning: "The Distressor" },
+            { ar: "النَّافِعُ", en: "AN-NAFI", meaning: "The Propitious" },
+            { ar: "النُّورُ", en: "AN-NUR", meaning: "The Light" },
+            { ar: "الْهَادِي", en: "AL-HADI", meaning: "The Guide" },
+            { ar: "الْبَدِيعُ", en: "AL-BADI", meaning: "The Incomparable" },
+            { ar: "الْبَاقِي", en: "AL-BAQI", meaning: "The Everlasting" },
+            { ar: "الْوَارِثُ", en: "AL-WARITH", meaning: "The Inheritor" },
+            { ar: "الرَّشِيدُ", en: "AR-RASHID", meaning: "The Guide to the Right Path" },
+            { ar: "الصَّبُورُ", en: "AS-SABUR", meaning: "The Patient" }
+        ];
+
+        let currentIndex = 0;
+        let isRunning = true;
+        let timer = null;
+        const totalNames = namesOfAllah.length;
+        const angleStep = 360 / totalNames;
+
+        let audioCtx = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Strictly using pure Arabic script (ar-SA) so speech engine reads directly from Arabic text
+        function speakNativeArabic(nameObj) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(nameObj.ar);
+            utterance.lang = 'ar-SA'; // Native Saudi/Standard Arabic Voice profile
+            utterance.rate = 0.65;    // Rhythmic, clear and unhurried speed
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        const namesWheel = document.getElementById('namesWheel');
+        const counterBadge = document.getElementById('counterBadge');
+        const arabicName = document.getElementById('arabicName');
+        const englishName = document.getElementById('englishName');
+        const nameMeaning = document.getElementById('nameMeaning');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const playIcon = document.getElementById('playIcon');
+        const playText = document.getElementById('playText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const soundToggle = document.getElementById('soundToggle');
+        const startOverlay = document.getElementById('startOverlay');
+        const startAppBtn = document.getElementById('startAppBtn');
+
+        function initWheel() {
+            namesWheel.innerHTML = '';
+            namesOfAllah.forEach((item, index) => {
+                const span = document.createElement('span');
+                span.className = 'absolute text-[9px] sm:text-[10px] font-semibold tracking-tighter text-gray-700 whitespace-nowrap';
+                span.style.left = '50%';
+                span.style.top = '50%';
+                
+                const angle = index * angleStep;
+                const radius = 125;
+                const radian = (angle - 90) * (Math.PI / 180);
+                const x = Math.cos(radian) * radius;
+                const y = Math.sin(radian) * radius;
+
+                span.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${angle + 90}deg)`;
+                span.textContent = item.en;
+                namesWheel.appendChild(span);
+            });
+        }
+
+        function updateClock(index) {
+            currentIndex = (index + totalNames) % totalNames;
+            
+            const rotationAngle = -currentIndex * angleStep;
+            namesWheel.style.transform = `rotate(${rotationAngle}deg)`;
+
+            const currentItem = namesOfAllah[currentIndex];
+            arabicName.textContent = currentItem.ar;
+            englishName.textContent = currentItem.en;
+            nameMeaning.textContent = currentItem.meaning;
+            counterBadge.textContent = `${currentIndex + 1} / ${totalNames}`;
+
+            if (soundToggle.checked) {
+                speakNativeArabic(currentItem);
+            }
+        }
+
+        function startClockTimer() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                if (isRunning) {
+                    updateClock(currentIndex + 1);
+                }
+            }, 3500); // 3.5 seconds delay for calm, proper rhythmic Arabic cadence
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            isRunning = !isRunning;
+            if (isRunning) {
+                playIcon.textContent = '⏸';
+                playText.textContent = 'Pause Dhikr';
+                startClockTimer();
+            } else {
+                playIcon.textContent = '▶';
+                playText.textContent = 'Resume Dhikr';
+                clearInterval(timer);
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            updateClock(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            updateClock(currentIndex + 1);
+        });
+
+        startAppBtn.addEventListener('click', () => {
+            initAudioContext();
+            startOverlay.style.display = 'none';
+            initWheel();
+            updateClock(0);
+            startClockTimer();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
+            }
+        });
+    </script>
+</body>
+</html>
