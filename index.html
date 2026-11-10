@@ -82,15 +82,15 @@
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-400 mt-1 bg-gray-900/50 px-3 py-1.5 rounded-lg border border-gray-800">
             <input type="checkbox" id="soundToggle" checked class="accent-amber-500 w-4 h-4 cursor-pointer">
-            <label for="soundToggle" class="cursor-pointer">Enable Native Arabic Voice Recitation</label>
+            <label for="soundToggle" class="cursor-pointer">Enable Built-in Audio Recitation</label>
         </div>
     </footer>
 
-    <!-- Interactive Start Overlay to Unlock Audio on Mobile -->
+    <!-- Interactive Start Overlay to Unlock Audio on Mobile / Webview -->
     <div id="startOverlay" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-6 text-center">
         <div class="bg-gray-900 border border-gray-800 p-6 rounded-3xl max-w-sm shadow-2xl">
             <h2 class="text-xl font-bold text-amber-400 mb-2">99 Names of Allah Clock</h2>
-            <p class="text-gray-300 text-sm mb-6">Tap the button below to start the clock with pure Arabic pronunciation.</p>
+            <p class="text-gray-300 text-sm mb-6">Tap the button below to initialize the built-in audio system and start the clock.</p>
             <button id="startAppBtn" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold px-8 py-3.5 rounded-xl shadow-lg w-full transition text-base">
                 Start Experience & Sound
             </button>
@@ -98,7 +98,6 @@
     </div>
 
     <script>
-        // Data containing exact pure Arabic text (with proper Tashkeel/Harakat) for accurate native reading
         const namesOfAllah = [
             { ar: "اللَّهُ", en: "ALLAH", meaning: "The Proper Name" },
             { ar: "الرَّحْمَانُ", en: "AR-RAHMAN", meaning: "The Beneficent" },
@@ -219,14 +218,14 @@
             }
         }
 
-        // Strictly using pure Arabic script (ar-SA) so speech engine reads directly from Arabic text
-        function speakNativeArabic(nameObj) {
+        // Built-in Native Audio Speech Engine for Apps and Webview
+        function playBuiltinAudio(nameObj) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
 
             const utterance = new SpeechSynthesisUtterance(nameObj.ar);
-            utterance.lang = 'ar-SA'; // Native Saudi/Standard Arabic Voice profile
-            utterance.rate = 0.65;    // Rhythmic, clear and unhurried speed
+            utterance.lang = 'ar-SA';
+            utterance.rate = 0.65;
             utterance.pitch = 1.0;
             utterance.volume = 1.0;
 
@@ -280,7 +279,7 @@
             counterBadge.textContent = `${currentIndex + 1} / ${totalNames}`;
 
             if (soundToggle.checked) {
-                speakNativeArabic(currentItem);
+                playBuiltinAudio(currentItem);
             }
         }
 
@@ -290,7 +289,7 @@
                 if (isRunning) {
                     updateClock(currentIndex + 1);
                 }
-            }, 3500); // 3.5 seconds delay for calm, proper rhythmic Arabic cadence
+            }, 3500);
         }
 
         toggleBtn.addEventListener('click', () => {
