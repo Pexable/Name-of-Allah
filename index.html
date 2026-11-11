@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" dir="rtl">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Poppins:wght@400;500;600&display=swap');
-        
-        .amiri-font {
-            font-family: 'Amiri', serif;
-        }
-        
+
+        .amiri-font { font-family: 'Amiri', serif; }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #0f1115;
             color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #namesWheel {
@@ -33,28 +32,22 @@
 
     <!-- Main Clock Container -->
     <main class="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center my-4">
-        
-        <!-- Outer White Clock Dial -->
         <div class="absolute inset-0 bg-white rounded-full shadow-2xl border-4 border-gray-200 flex items-center justify-center overflow-hidden">
-            
-            <!-- Rotating Names Wheel -->
-            <div id="namesWheel" class="absolute w-full h-full rounded-full">
-                <!-- Dynamically injected names -->
-            </div>
 
-            <!-- Inner Dark Circle with Islamic Icon (Lantern & Star) -->
+            <!-- Rotating Names Wheel -->
+            <div id="namesWheel" class="absolute w-full h-full rounded-full"></div>
+
+            <!-- Inner Dark Circle -->
             <div class="absolute w-32 h-32 sm:w-36 sm:h-36 bg-[#0f1115] rounded-full flex flex-col items-center justify-center shadow-inner z-10 border border-amber-500/20">
-                <!-- Islamic Lantern SVG Icon -->
                 <svg class="w-10 h-10 text-amber-400 mb-1 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2c-.55 0-1 .45-1 1v1.08C7.57 4.57 5 7.51 5 11v5l-2 2v1h18v-1l-2-2v-5c0-3.49-2.57-6.43-6-7.92V3c0-.55-.45-1-1-1zm0 4c2.76 0 5 2.24 5 5v5.17l1.59 1.59H5.41L7 16.17V11c0-2.76 2.24-5 5-5zm-1 9h2v4h-2v-4z"/>
                 </svg>
-                <!-- Decorative Islamic Star -->
                 <svg class="w-4 h-4 text-amber-300/80 mt-1 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0l3.5 8.5L24 12l-8.5 3.5L12 24l-3.5-8.5L0 12l8.5-3.5z"/>
                 </svg>
             </div>
 
-            <!-- Clock Pointer Hand -->
+            <!-- Clock Pointer -->
             <div id="clockHand" class="absolute top-0 bottom-0 left-1/2 w-1 -ml-0.5 z-20 pointer-events-none">
                 <div class="absolute top-6 left-1/2 -ml-2.5 w-5 h-5 bg-black border-2 border-white rounded-full shadow-md flex items-center justify-center">
                     <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
@@ -63,15 +56,16 @@
         </div>
     </main>
 
-    <!-- Display Active Name Details -->
+    <!-- Active Name Details -->
     <section class="w-full max-w-md bg-gray-900/85 backdrop-blur border border-gray-800 rounded-2xl p-5 text-center shadow-xl my-2">
-        <div id="arabicName" class="amiri-font text-3xl sm:text-4xl text-amber-400 mb-1">ٱلرَّحْمَٰنُ</div>
+        <div id="arabicName" class="amiri-font text-3xl sm:text-4xl text-amber-400 mb-1" dir="rtl">ٱلرَّحْمَٰنُ</div>
         <div id="englishName" class="text-lg sm:text-xl font-semibold tracking-wide text-white">AR-RAHMAN</div>
         <div id="nameMeaning" class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider mt-0.5">The Beneficent</div>
         <div class="text-[10px] text-amber-300/80 mt-2 italic">(Say it in your heart)</div>
+        <div id="audioStatus" class="text-[11px] text-amber-200/80 mt-1 h-4"></div>
     </section>
 
-    <!-- Audio / Playback Controls -->
+    <!-- Controls -->
     <footer class="w-full max-w-md flex flex-col items-center gap-3 pb-4">
         <div class="flex items-center justify-center gap-4 w-full">
             <button id="prevBtn" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition">Prev</button>
@@ -82,15 +76,15 @@
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-400 mt-1 bg-gray-900/50 px-3 py-1.5 rounded-lg border border-gray-800">
             <input type="checkbox" id="soundToggle" checked class="accent-amber-500 w-4 h-4 cursor-pointer">
-            <label for="soundToggle" class="cursor-pointer">Enable Built-in Audio Recitation</label>
+            <label for="soundToggle" class="cursor-pointer">Enable Audio Recitation</label>
         </div>
     </footer>
 
-    <!-- Interactive Start Overlay to Unlock Audio on Mobile / Webview -->
+    <!-- Start Overlay (unlocks audio on mobile / WebView) -->
     <div id="startOverlay" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-6 text-center">
         <div class="bg-gray-900 border border-gray-800 p-6 rounded-3xl max-w-sm shadow-2xl">
             <h2 class="text-xl font-bold text-amber-400 mb-2">99 Names of Allah Clock</h2>
-            <p class="text-gray-300 text-sm mb-6">Tap the button below to initialize the built-in audio system and start the clock.</p>
+            <p class="text-gray-300 text-sm mb-6">Tap the button below to initialize the audio system and start the clock.</p>
             <button id="startAppBtn" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold px-8 py-3.5 rounded-xl shadow-lg w-full transition text-base">
                 Start Experience & Sound
             </button>
@@ -100,7 +94,7 @@
     <script>
         const namesOfAllah = [
             { ar: "اللَّهُ", en: "ALLAH", meaning: "The Proper Name" },
-            { ar: "الرَّحْمَانُ", en: "AR-RAHMAN", meaning: "The Beneficent" },
+            { ar: "الرَّحْمَٰنُ", en: "AR-RAHMAN", meaning: "The Beneficent" },
             { ar: "الرَّحِيمُ", en: "AR-RAHIM", meaning: "The Merciful" },
             { ar: "الْمَلِكُ", en: "AL-MALIK", meaning: "The Eternal Lord" },
             { ar: "الْقُدُّوسُ", en: "AL-QUDDUS", meaning: "The Pure" },
@@ -184,13 +178,13 @@
             { ar: "الْعَفُوُّ", en: "AL-AFUWW", meaning: "The Pardoner" },
             { ar: "الرَّؤُوفُ", en: "AR-RA'UF", meaning: "The Compassionate" },
             { ar: "مَالِكُ الْمُلْكِ", en: "MALIK-UL-MULK", meaning: "Owner of Sovereignty" },
-            { ar: "ذُو الْجَلَالِ وَالِإْكْرَامِ", en: "DHUL-JALALI WAL-IKRAM", meaning: "Lord of Majesty & Generosity" },
+            { ar: "ذُو الْجَلَالِ وَالْإِكْرَامِ", en: "DHUL-JALALI WAL-IKRAM", meaning: "Lord of Majesty & Generosity" },
             { ar: "الْمُقْسِطُ", en: "AL-MUQSIT", meaning: "The Equitable" },
             { ar: "الْجَامِعُ", en: "AL-JAMI", meaning: "The Gatherer" },
             { ar: "الْغَنِيُّ", en: "AL-GHANIYY", meaning: "The Self-Sufficient" },
-            { ar: "الْمُغْنِي", en: "AL-MUGHNNI", meaning: "The Enricher" },
+            { ar: "الْمُغْنِي", en: "AL-MUGHNI", meaning: "The Enricher" },
             { ar: "الْمَانِعُ", en: "AL-MANI", meaning: "The Preventer" },
-            { ar: "الضَّارُ", en: "AD-DARR", meaning: "The Distressor" },
+            { ar: "الضَّارُّ", en: "AD-DARR", meaning: "The Distressor" },
             { ar: "النَّافِعُ", en: "AN-NAFI", meaning: "The Propitious" },
             { ar: "النُّورُ", en: "AN-NUR", meaning: "The Light" },
             { ar: "الْهَادِي", en: "AL-HADI", meaning: "The Guide" },
@@ -207,31 +201,160 @@
         const totalNames = namesOfAllah.length;
         const angleStep = 360 / totalNames;
 
+        // =====================================================
+        // AUDIO ENGINE
+        // -----------------------------------------------------
+        // Why audio used to stop after 2 names:
+        //   Android WebView only allows audio that starts from a tap.
+        //   The old code made a NEW Audio() for every name, started by a
+        //   timer (not a tap), so WebView blocked it after the first tap
+        //   permission expired.
+        // Fix:
+        //   ONE persistent <audio> element is created and unlocked by the
+        //   tap. After that we only change its src, which WebView allows.
+        //
+        // Sources tried in order for each name:
+        //   1) audio/N.mp3   (your own files, works offline)
+        //   2) Online Arabic voice (needs internet)
+        //   3) Device speechSynthesis
+        // =====================================================
+        const player = new Audio();
+        player.preload = 'auto';
+        player.setAttribute('playsinline', '');
+        player.setAttribute('webkit-playsinline', '');
+
+        let playToken = 0;
+        let audioUnlocked = false;
         let audioCtx = null;
+        let wakeLock = null;
+        const audioStatus = document.getElementById('audioStatus');
+
+        function setStatus(text) { audioStatus.textContent = text || ''; }
 
         function initAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) { /* ignore */ }
+        }
+
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator && !wakeLock) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    wakeLock.addEventListener('release', () => { wakeLock = null; });
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        function stopAudio() {
+            playToken++;
+            player.onerror = null;
+            try { player.pause(); } catch (e) {}
+            if ('speechSynthesis' in window) {
+                try { window.speechSynthesis.cancel(); } catch (e) {}
             }
         }
 
-        // Built-in Native Audio Speech Engine for Apps and Webview
-        function playBuiltinAudio(nameObj) {
-            if (!('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(nameObj.ar);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.65;
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
-
-            window.speechSynthesis.speak(utterance);
+        function getArabicVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = window.speechSynthesis.getVoices() || [];
+            return voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar')) || null;
         }
 
+        function speakFallback(nameObj, token) {
+            if (token !== playToken) return;
+            if (!('speechSynthesis' in window)) { setStatus('Audio not available (add audio/ files)'); return; }
+            try {
+                const u = new SpeechSynthesisUtterance(nameObj.ar);
+                const voice = getArabicVoice();
+                if (voice) u.voice = voice;
+                u.lang = 'ar-SA';
+                u.rate = 0.65;
+                u.pitch = 1;
+                u.volume = 1;
+                u.onstart = () => setStatus('');
+                u.onerror = () => setStatus('Audio not available (add audio/ files)');
+                window.speechSynthesis.speak(u);
+            } catch (e) {
+                setStatus('Audio not available (add audio/ files)');
+            }
+        }
+
+        function playBuiltinAudio(nameObj, index) {
+            stopAudio();
+            const token = playToken;
+            const sources = [
+                `audio/${index + 1}.mp3`,
+                `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q=${encodeURIComponent(nameObj.ar)}`
+            ];
+
+            function trySource(i) {
+                if (token !== playToken) return;
+                if (i >= sources.length) { speakFallback(nameObj, token); return; }
+
+                let handled = false;
+                const next = () => {
+                    if (handled || token !== playToken) return;
+                    handled = true;
+                    trySource(i + 1);
+                };
+
+                player.onerror = next;
+                player.src = sources[i];
+                player.currentTime = 0;
+
+                const p = player.play();
+                if (p && typeof p.then === 'function') {
+                    p.then(() => {
+                        if (token === playToken) { audioUnlocked = true; setStatus(''); }
+                    }).catch(err => {
+                        if (token !== playToken) return;
+                        if (err && err.name === 'NotAllowedError') {
+                            // Blocked by WebView: wait for the next tap and retry
+                            handled = true;
+                            setStatus('Tap anywhere to enable sound');
+                            waitForTapAndRetry();
+                        } else if (err && err.name === 'AbortError') {
+                            // interrupted by a newer request, ignore
+                        } else {
+                            next();
+                        }
+                    });
+                }
+            }
+
+            trySource(0);
+        }
+
+        let waitingForTap = false;
+        function waitForTapAndRetry() {
+            if (waitingForTap) return;
+            waitingForTap = true;
+            const retry = () => {
+                document.removeEventListener('touchstart', retry, true);
+                document.removeEventListener('click', retry, true);
+                waitingForTap = false;
+                if (soundToggle.checked && isRunning) {
+                    playBuiltinAudio(namesOfAllah[currentIndex], currentIndex);
+                }
+            };
+            document.addEventListener('touchstart', retry, true);
+            document.addEventListener('click', retry, true);
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        }
+
+        // Re-acquire wake lock when returning to the app
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && isRunning) requestWakeLock();
+        });
+
+        // =====================================================
+        // UI
+        // =====================================================
         const namesWheel = document.getElementById('namesWheel');
         const counterBadge = document.getElementById('counterBadge');
         const arabicName = document.getElementById('arabicName');
@@ -253,7 +376,7 @@
                 span.className = 'absolute text-[9px] sm:text-[10px] font-semibold tracking-tighter text-gray-700 whitespace-nowrap';
                 span.style.left = '50%';
                 span.style.top = '50%';
-                
+
                 const angle = index * angleStep;
                 const radius = 125;
                 const radian = (angle - 90) * (Math.PI / 180);
@@ -266,29 +389,31 @@
             });
         }
 
-        function updateClock(index) {
+        function showName(index) {
             currentIndex = (index + totalNames) % totalNames;
-            
-            const rotationAngle = -currentIndex * angleStep;
-            namesWheel.style.transform = `rotate(${rotationAngle}deg)`;
 
-            const currentItem = namesOfAllah[currentIndex];
-            arabicName.textContent = currentItem.ar;
-            englishName.textContent = currentItem.en;
-            nameMeaning.textContent = currentItem.meaning;
+            namesWheel.style.transform = `rotate(${-currentIndex * angleStep}deg)`;
+
+            const item = namesOfAllah[currentIndex];
+            arabicName.textContent = item.ar;
+            englishName.textContent = item.en;
+            nameMeaning.textContent = item.meaning;
             counterBadge.textContent = `${currentIndex + 1} / ${totalNames}`;
+        }
 
-            if (soundToggle.checked) {
-                playBuiltinAudio(currentItem);
+        function updateClock(index, withSound = true) {
+            showName(index);
+            if (withSound && soundToggle.checked) {
+                playBuiltinAudio(namesOfAllah[currentIndex], currentIndex);
+            } else if (!soundToggle.checked) {
+                stopAudio();
             }
         }
 
         function startClockTimer() {
             if (timer) clearInterval(timer);
             timer = setInterval(() => {
-                if (isRunning) {
-                    updateClock(currentIndex + 1);
-                }
+                if (isRunning) updateClock(currentIndex + 1);
             }, 3500);
         }
 
@@ -297,32 +422,51 @@
             if (isRunning) {
                 playIcon.textContent = '⏸';
                 playText.textContent = 'Pause Dhikr';
+                initAudioContext();
+                requestWakeLock();
+                // Play the current name right away inside the tap
+                if (soundToggle.checked) {
+                    playBuiltinAudio(namesOfAllah[currentIndex], currentIndex);
+                }
                 startClockTimer();
             } else {
                 playIcon.textContent = '▶';
                 playText.textContent = 'Resume Dhikr';
                 clearInterval(timer);
-                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                stopAudio();
+                setStatus('');
             }
         });
 
         prevBtn.addEventListener('click', () => {
+            initAudioContext();
             updateClock(currentIndex - 1);
+            if (isRunning) startClockTimer();
         });
 
         nextBtn.addEventListener('click', () => {
+            initAudioContext();
             updateClock(currentIndex + 1);
+            if (isRunning) startClockTimer();
+        });
+
+        soundToggle.addEventListener('change', () => {
+            if (soundToggle.checked) {
+                initAudioContext();
+                playBuiltinAudio(namesOfAllah[currentIndex], currentIndex);
+            } else {
+                stopAudio();
+                setStatus('');
+            }
         });
 
         startAppBtn.addEventListener('click', () => {
             initAudioContext();
+            requestWakeLock();
             startOverlay.style.display = 'none';
             initWheel();
-            updateClock(0);
+            updateClock(0);   // first sound starts inside the tap, unlocking the audio element
             startClockTimer();
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
-            }
         });
     </script>
 </body>
